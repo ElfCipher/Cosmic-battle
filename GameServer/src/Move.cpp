@@ -3,15 +3,14 @@
 namespace Server
 {
 
-Move::Move(Vector startPosition, Vector velocity) :
-    IMovable(velocity)
+Move::Move(std::shared_ptr<IMovable> m) :
+    m(m)
 {
-    position = startPosition;
 }
 
 void Move::Execute()
 {
-    setPosition(position + velocity);
+    m->setPosition(m->getPosition() + m->getVelocity());
 }
 
 } // namespace Server

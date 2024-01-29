@@ -9,9 +9,10 @@ TEST(MOVABLE, MOVE_TEST)
 {
     Server::Vector startPosition(12, 5);
     Server::Vector velocity(-7, 3);
-    Server::Move move(startPosition, velocity);
+    auto movable = std::make_shared<Server::IMovable>(startPosition, velocity);
+    Server::Move move(movable);
     move.Execute();
-    Server::Vector finishPosition = move.getPosition();
+    Server::Vector finishPosition = movable->getPosition();
     Server::Vector expectedPosition(5, 8);
     EXPECT_EQ(expectedPosition, finishPosition);
 }
@@ -21,15 +22,15 @@ TEST(MOVABLE, INTERFACE_TEST)
 {
     Server::Vector startPosition(12, 5);
     Server::Vector velocity(-7, 3);
-    Server::Move move(startPosition, velocity);
+    auto movable = std::make_shared<Server::IMovable>(velocity, startPosition);
 
-    EXPECT_EQ(startPosition, move.getPosition()); // читаем положение
+    EXPECT_EQ(startPosition, movable->getPosition()); // читаем положение
 
-    EXPECT_EQ(velocity, move.getVelocity()); // читаем скорость
+    EXPECT_EQ(velocity, movable->getVelocity()); // читаем скорость
 
     Server::Vector newPosition(10, 10);
-    move.setPosition(newPosition);
-    EXPECT_EQ(newPosition, move.getPosition()); // объект меняет положение
+    movable->setPosition(newPosition);
+    EXPECT_EQ(newPosition, movable->getPosition()); // объект меняет положение
 }
 
 
@@ -39,9 +40,10 @@ TEST(ROTABLE, ROTATE_TEST)
 {
     int startDirection = 0;
     int angularVelocity = 10;
-    Server::Rotate rotate(startDirection, angularVelocity);
+    auto rotable = std::make_shared<Server::IRotable>(startDirection, angularVelocity);
+    Server::Rotate rotate(rotable);
     rotate.Execute();
-    int finishDirection = rotate.getDirection();
+    int finishDirection = rotable->getDirection();
     int expectedDirection = 10;
     EXPECT_EQ(expectedDirection, finishDirection);
 
@@ -52,13 +54,13 @@ TEST(ROTABLE, INTERFACE_TEST)
 {
     int startDirection = 0;
     int angularVelocity = 10;
-    Server::Rotate rotate(startDirection, angularVelocity);
+    auto rotable = std::make_shared<Server::IRotable>(startDirection, angularVelocity);
 
-    EXPECT_EQ(startDirection, rotate.getDirection()); // читаем направление
+    EXPECT_EQ(startDirection, rotable->getDirection()); // читаем направление
 
-    EXPECT_EQ(angularVelocity, rotate.getAngularVelocity()); // читаем угловую скорость
+    EXPECT_EQ(angularVelocity, rotable->getAngularVelocity()); // читаем угловую скорость
     
     int newDirection = -15;
-    rotate.setDirection(newDirection);
-    EXPECT_EQ(newDirection, rotate.getDirection());
+    rotable->setDirection(newDirection);
+    EXPECT_EQ(newDirection, rotable->getDirection());
 }

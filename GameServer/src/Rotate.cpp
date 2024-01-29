@@ -3,15 +3,14 @@
 namespace Server
 {
 
-Rotate::Rotate(int direction, int angularVelocity) :
-    IRotable(angularVelocity)
+Rotate::Rotate(std::shared_ptr<IRotable> r) :
+    r(r)
 {
-    this->direction = direction;
 }
 
 void Rotate::Execute()
 {
-    setDirection(getDirection() + getAngularVelocity()%getDirectionsNumber());
+    r->setDirection(r->getDirection() + r->getAngularVelocity()%r->getDirectionsNumber());
 }
 
 } // namespace Server

@@ -8,8 +8,8 @@ namespace Server
 class IRotable
 {
 public:
-    IRotable(int angularVelocity) :
-        direction(0),
+    IRotable(int direction, int angularVelocity) :
+        direction(direction),
         angularVelocity(angularVelocity),
         directionsNumber(360) {}
     

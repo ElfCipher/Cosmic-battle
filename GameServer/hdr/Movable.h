@@ -41,8 +41,8 @@ struct Vector
 class IMovable
 {
 public:
-    IMovable(Vector velocity) :
-        velocity(velocity) {}
+    IMovable(Vector velocity, Vector position) :
+        velocity(velocity), position(position) {}
     
     virtual ~IMovable() {}
 
@@ -57,8 +57,8 @@ public:
     }
     
 protected:
-    Vector position;
     Vector velocity; // проекции вектора скорости на оси
+    Vector position;
 };
 
 } // namespace Server

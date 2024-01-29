@@ -5,6 +5,7 @@ set(SOURCES
     src/Rotate.cpp)
 
 set(HEADERS
+    hdr/ICommand.h
     hdr/Movable.h
     hdr/Rotable.h
     hdr/Move.h
