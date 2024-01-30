@@ -3,6 +3,8 @@
 #include <gtest/gtest.h>
 #include "Move.h"
 #include "Rotate.h"
+#include "EventLoop.h"
+#include "Exception.h"
 
 // Проверка правильности движения    
 TEST(MOVABLE, MOVE_TEST)
@@ -63,4 +65,34 @@ TEST(ROTABLE, INTERFACE_TEST)
     int newDirection = -15;
     rotable->setDirection(newDirection);
     EXPECT_EQ(newDirection, rotable->getDirection());
+}
+
+
+class TestExc : public Server::Exception
+{
+    std::string msg = "Test exception";
+public:
+    virtual const char* what() const noexcept override {
+        return msg.c_str();
+    }
+};
+
+class TestCmd : public Server::ICommand
+{
+    virtual void Execute()
+    {
+        throw TestExc();
+    }
+};
+
+TEST(EVENT_LOOP, LOOP_LIFE)
+{
+    Server::EventLoop& loop = Server::EventLoop::Locate();
+    loop.Start();
+    EXPECT_TRUE(loop.IsStarted());
+
+    loop.Put(std::make_shared<TestCmd>()); // TODO: check catching exception
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    loop.Stop();
+    EXPECT_FALSE(loop.IsStarted());
 }
