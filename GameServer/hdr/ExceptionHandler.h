@@ -19,6 +19,7 @@ public:
     PICommand Handle(PICommand cmd, const Exception& exc);
 
 private:
+    // у каждой команды есть свои исключения, которые обрабатываются свои хэнделором
     std::map<std::type_index, std::map<std::type_index, Handler>> store;
 };
 
