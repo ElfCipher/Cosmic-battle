@@ -8,7 +8,7 @@ namespace Server
 class Exception : public std::exception
 {
 public:
-    Exception() {};
+    virtual const char* what() const noexcept = 0;
     virtual ~Exception() {};
 };
 

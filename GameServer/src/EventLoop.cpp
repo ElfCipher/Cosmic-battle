@@ -78,7 +78,7 @@ void EventLoop::Exec()
             }
             catch(const Exception& e)
             {
-                std::cout << e.what() << std::endl;
+                handler.Handle(cmd, e)->Execute();
             }
         }
     }

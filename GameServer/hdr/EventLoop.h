@@ -6,6 +6,7 @@
 #include <memory>
 #include <semaphore>
 #include "ICommand.h"
+#include "ExceptionHandler.h"
 
 namespace Server
 {
@@ -34,6 +35,7 @@ private:
     std::mutex mut;
     std::queue<Command> queue;
     std::binary_semaphore sem{0};
+    ExceptionHandler handler;
 };
 
 } // namespace Server
