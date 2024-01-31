@@ -6,6 +6,7 @@ set(SOURCES
     main.cpp)
 
 set(HEADERS
+    testClasses.h
     commandsTest.h
     eventLoopTest.h)
 

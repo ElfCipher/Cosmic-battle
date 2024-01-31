@@ -24,6 +24,9 @@ public:
     
     void Put(Command cmd);
     static EventLoop& Locate();
+    ExceptionHandler& GetHandler() {
+        return handler;
+    }
     ~EventLoop();
 
 private:

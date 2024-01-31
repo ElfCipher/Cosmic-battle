@@ -3,16 +3,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "EventLoop.h"
-#include "Exception.h"
-
-class TestExc : public Server::Exception
-{
-    std::string msg = "Test exception";
-public:
-    virtual const char* what() const noexcept override {
-        return msg.c_str();
-    }
-};
+#include "testClasses.h"
 
 TEST(EVENT_LOOP, LOOP_LIFE)
 {

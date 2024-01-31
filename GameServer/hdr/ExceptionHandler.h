@@ -15,8 +15,9 @@ using Handler = std::function<PICommand(PICommand, const Exception&)>;
 class ExceptionHandler
 {
 public:
+    virtual ~ExceptionHandler() {}
     int RegisterHandler(std::type_index cmd, std::type_index exc, Handler handler);
-    PICommand Handle(PICommand cmd, const Exception& exc);
+    virtual PICommand Handle(PICommand cmd, const Exception& exc);
 
 private:
     // у каждой команды есть свои исключения, которые обрабатываются свои хэнделором

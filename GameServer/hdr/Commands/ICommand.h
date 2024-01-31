@@ -14,4 +14,11 @@ public:
 
 using PICommand = std::shared_ptr<ICommand>;
 
+class DummyCommand : public ICommand
+{
+public:
+    virtual void Execute() override { };
+    virtual ~DummyCommand() {}
+};
+
 } // namespace Server

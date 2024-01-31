@@ -4,7 +4,8 @@
 #include "Move.h"
 #include "Rotate.h"
 #include "EventLoop.h"
-#include "Exception.h"
+#include "LogCommand.h"
+#include "testClasses.h"
 
 // Проверка правильности движения    
 TEST(MOVABLE, MOVE_TEST)
@@ -65,4 +66,11 @@ TEST(ROTABLE, INTERFACE_TEST)
     int newDirection = -15;
     rotable->setDirection(newDirection);
     EXPECT_EQ(newDirection, rotable->getDirection());
+}
+
+TEST(LOG_COMMAND, LOG)
+{
+    TestExc exc;
+    Server::LogCommand cmd(exc);
+    cmd.Execute();
 }

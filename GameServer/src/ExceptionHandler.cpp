@@ -15,7 +15,12 @@ PICommand ExceptionHandler::Handle(PICommand cmd, const Exception& exc)
 {
     auto cmdT = std::type_index(typeid(cmd));
     auto excT = std::type_index(typeid(exc));
-    return store[cmdT][excT](cmd, exc);
+    auto handler = store[cmdT][excT];
+
+    if(handler)
+        return handler(cmd, exc);
+
+    return std::make_shared<DummyCommand>();
 }
 
 } // namespace Server
