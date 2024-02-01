@@ -18,7 +18,7 @@ Handler addRepeatCmdInQueue = [](PICommand cmd, const Exception& exc) -> PIComma
     return makeDummy();
 };
 
-Handler repeateAndLogInCase = [](PICommand cmd, const Exception& exc) -> PICommand {
+Handler repeatAndLogInCase = [](PICommand cmd, const Exception& exc) -> PICommand {
     RepeatCommand rcmd(cmd);
     try
     {
@@ -31,7 +31,7 @@ Handler repeateAndLogInCase = [](PICommand cmd, const Exception& exc) -> PIComma
     return makeDummy();
 };
 
-Handler repeateTwiceAndLog = [](PICommand cmd, const Exception& exc) -> PICommand {
+Handler repeatTwiceAndLog = [](PICommand cmd, const Exception& exc) -> PICommand {
     DoubleRepeat drCmd(cmd);
     try
     {
@@ -39,7 +39,7 @@ Handler repeateTwiceAndLog = [](PICommand cmd, const Exception& exc) -> PIComman
     }
     catch(const Exception& e)
     {
-        return repeateAndLogInCase(cmd, e); // второе повторение и лог
+        return repeatAndLogInCase(cmd, e); // второе повторение и лог
     }
     
     return makeDummy();

@@ -78,8 +78,8 @@ TEST(LOG_COMMAND, LOGGING)
     EXPECT_NO_THROW(cmd.Execute());
 }
 
-// RepeateCommand test
-TEST(REPEAT_COMMAND, REPEATE)
+// RepeatCommand test
+TEST(REPEAT_COMMAND, REPEAT)
 {
     auto cmd = std::make_shared<MockCommand>();
     EXPECT_CALL(*cmd, Execute());

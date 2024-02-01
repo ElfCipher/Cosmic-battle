@@ -27,11 +27,23 @@ TEST(COMMON_HANDLERS, addRepeatCmdInQueue)
     loop.Stop();
 }
 
-TEST(COMMON_HANDLERS, repeateAndLogInCase)
+TEST(COMMON_HANDLERS, repeatAndLogInCase)
 {
     TestExc exc;
     auto cmd = std::make_shared<MockCommand>();
     EXPECT_CALL(*cmd, Execute())
         .WillOnce(testing::Throw<TestExc>(TestExc()));
-    Server::repeateAndLogInCase(cmd, exc);
+    auto ret = Server::repeatAndLogInCase(cmd, exc);
+    EXPECT_EQ(typeid(*ret), typeid(Server::LogCommand));
+}
+
+TEST(COMMON_HANDLERS, repeatTwiceAndLog)
+{
+    TestExc exc;
+    auto cmd = std::make_shared<MockCommand>();
+    EXPECT_CALL(*cmd, Execute())
+        .Times(2)
+        .WillRepeatedly(testing::Throw<TestExc>(TestExc()));
+    auto ret = Server::repeatTwiceAndLog(cmd, exc);
+    EXPECT_EQ(typeid(*ret), typeid(Server::LogCommand));
 }
