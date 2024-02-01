@@ -8,12 +8,12 @@ namespace Server
 /**
  * @brief Повторяет команду
  */
-class RepeateCommand : public ICommand
+class RepeatCommand : public ICommand
 {
 public:
-    RepeateCommand(PICommand cmd) :
+    RepeatCommand(PICommand cmd) :
         cmd(cmd) { }
-    virtual ~RepeateCommand() {}
+    virtual ~RepeatCommand() {}
 
     virtual void Execute() override {
         cmd->Execute();

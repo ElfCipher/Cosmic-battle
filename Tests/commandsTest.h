@@ -69,15 +69,13 @@ TEST(ROTABLE, INTERFACE_TEST)
     EXPECT_EQ(newDirection, rotable->getDirection());
 }
 
+
 // LogCommand test
 TEST(LOG_COMMAND, LOGGING)
 {
-    std::stringstream ss;
     TestExc exc;
-    Server::LogCommand cmd(ss, exc);
-    EXPECT_TRUE(ss.str().empty());
-    cmd.Execute();
-    EXPECT_EQ(ss.str(), std::string("Exception 7TestExc has been thrown\n"));
+    Server::LogCommand cmd(exc);
+    EXPECT_NO_THROW(cmd.Execute());
 }
 
 // RepeateCommand test
@@ -85,6 +83,6 @@ TEST(REPEAT_COMMAND, REPEATE)
 {
     auto cmd = std::make_shared<MockCommand>();
     EXPECT_CALL(*cmd, Execute());
-    Server::RepeateCommand rcmd(cmd);
+    Server::RepeatCommand rcmd(cmd);
     rcmd.Execute();
 }

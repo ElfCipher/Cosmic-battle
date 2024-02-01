@@ -13,7 +13,7 @@ int ExceptionHandler::RegisterHandler(std::type_index cmd, std::type_index exc, 
 
 PICommand ExceptionHandler::Handle(PICommand cmd, const Exception& exc)
 {
-    auto cmdT = std::type_index(typeid(cmd));
+    auto cmdT = std::type_index(typeid(*cmd));
     auto excT = std::type_index(typeid(exc));
     auto handler = store[cmdT][excT];
 

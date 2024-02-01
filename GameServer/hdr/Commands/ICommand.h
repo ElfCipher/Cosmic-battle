@@ -21,4 +21,8 @@ public:
     virtual ~DummyCommand() {}
 };
 
+static auto makeDummy = []() {
+    return std::make_shared<DummyCommand>();
+};
+
 } // namespace Server

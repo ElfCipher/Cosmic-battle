@@ -19,10 +19,25 @@ TEST(EVENT_LOOP, CMD_EXECUTING)
     loop.Start();
 
     auto cmd = std::make_shared<MockCommand>();
-    EXPECT_CALL(*cmd, Execute())
-        .WillOnce(testing::Throw<TestExc>(TestExc()));
+    EXPECT_CALL(*cmd, Execute());
 
     loop.Put(cmd);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    loop.Stop();
+}
+
+TEST(EVENT_LOOP, CATCHING_EXCEPTION)
+{
+    Server::EventLoop& loop = Server::EventLoop::Locate();
+    loop.Start();
+
+    auto cmd = std::make_shared<MockCommand>();
+    EXPECT_CALL(*cmd, Execute())
+        .Times(2)   // сначала обычный вызов, а потом повторный вызов из mock_handler
+        .WillOnce(testing::Throw<TestExc>(TestExc()))
+        .WillOnce(testing::Return());
+
+    loop.GetHandler().RegisterHandler(typeid(MockCommand), typeid(TestExc), mock_handler);
+
+    loop.Put(cmd);
     loop.Stop();
 }

@@ -14,19 +14,25 @@ namespace Server
 class EventLoop
 {
 public:
+    // sync start (blocking)
     int Start();
     void Stop();
     bool IsStarted() {
         return isStarted;
     }
-
-    using Command = std::shared_ptr<ICommand>;
     
-    void Put(Command cmd);
+    void Put(PICommand cmd);
     static EventLoop& Locate();
+
     ExceptionHandler& GetHandler() {
         return handler;
     }
+
+    size_t GetCommandsNum() {
+        std::scoped_lock lk(mut);
+        return queue.size();
+    }
+
     ~EventLoop();
 
 private:
@@ -36,8 +42,9 @@ private:
     bool isStarted = false;
     std::thread thread;
     std::mutex mut;
-    std::queue<Command> queue;
-    std::binary_semaphore sem{0};
+    std::queue<PICommand> queue;
+    std::binary_semaphore qSem{0};
+    std::binary_semaphore startSem{0};
     ExceptionHandler handler;
 };
 

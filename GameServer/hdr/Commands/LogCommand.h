@@ -2,7 +2,7 @@
 
 #include "ICommand.h"
 #include "Exception.h"
-#include <iostream>
+#include "Logger.h"
 
 namespace Server
 {
@@ -10,18 +10,20 @@ namespace Server
 class LogCommand : public ICommand
 {
 public:
-    LogCommand(std::stringstream& ss, const Exception& exc) 
-        : ss(ss), exc(exc) {}
+    LogCommand(const Exception& exc) :
+        exc(exc) {}
 
     virtual ~LogCommand() {}
 
     virtual void Execute() override
     {
-        ss << "Exception " << typeid(exc).name() << " has been thrown" << std::endl;
+        std::stringstream ss;
+        ss << "Exception " << typeid(exc).name() << " has been thrown with message" << std::endl;
+        ss << exc.what() << std::endl;
+        Logger::Locate().Log(ss.str());
     }
 
 protected:
-    std::ostream& ss;
     const Exception& exc;
 };
 

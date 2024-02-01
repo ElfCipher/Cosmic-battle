@@ -29,6 +29,8 @@ int EventLoop::Start()
         isStarted = false;
         std::cerr << e.what() << std::endl;
     }
+
+    startSem.acquire();
     
     return 0;
 }
@@ -36,16 +38,16 @@ int EventLoop::Start()
 void EventLoop::Stop()
 {
     isStarted = false;
-    sem.release();
+    qSem.release();
     if(thread.joinable())
         thread.join();        
 }
 
-void EventLoop::Put(Command cmd)
+void EventLoop::Put(PICommand cmd)
 {
     std::scoped_lock lk(mut);
     queue.emplace(cmd);
-    sem.release();
+    qSem.release();
 }
 
 EventLoop &EventLoop::Locate()
@@ -60,14 +62,15 @@ EventLoop::~EventLoop()
 
 void EventLoop::Exec()
 {
+    startSem.release();
     while(isStarted)
     {
-        sem.acquire(); // сработал семафор (положили команду) - начали обрабатывать команды
+        qSem.acquire(); // сработал семафор (положили команду) - начали обрабатывать команды
         while (!queue.empty())
         {
-            Command cmd;
+            PICommand cmd;
             {
-                std::lock_guard lk(mut);
+                std::scoped_lock lk(mut);
                 cmd = queue.front();
                 queue.pop();
             }
