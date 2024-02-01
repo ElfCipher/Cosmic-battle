@@ -10,17 +10,18 @@ namespace Server
 class LogCommand : public ICommand
 {
 public:
-    LogCommand(const Exception& exc) 
-        : exc(exc) {}
+    LogCommand(std::stringstream& ss, const Exception& exc) 
+        : ss(ss), exc(exc) {}
 
     virtual ~LogCommand() {}
 
     virtual void Execute() override
     {
-        std::cout << "Exception " << typeid(exc).name() << " has been thrown" << std::endl;
+        ss << "Exception " << typeid(exc).name() << " has been thrown" << std::endl;
     }
 
 protected:
+    std::ostream& ss;
     const Exception& exc;
 };
 
