@@ -5,11 +5,11 @@
 
 class TestExc : public Server::Exception
 {
-    std::string msg = "Test exception";
 public:
-    virtual const char* what() const noexcept override {
-        return msg.c_str();
+    TestExc() {
+        msg = "Test exception";
     }
+    virtual ~TestExc() {}
 };
 
 class MockCommand : public Server::ICommand

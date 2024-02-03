@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <memory>
 
 namespace Server
 {
@@ -10,7 +11,7 @@ struct Vector
     int64_t x, y;
 
     Vector(int64_t x, int64_t y): x(x), y(y) { }
-    Vector(): x(0), y(0) { }
+    Vector(): Vector(0, 0) { }
     Vector(const Vector& other)
     {
         this->x = other.x;
@@ -41,7 +42,7 @@ struct Vector
 class IMovable
 {
 public:
-    IMovable(Vector velocity, Vector position) :
+    IMovable(Vector velocity = Vector(), Vector position = Vector()) :
         velocity(velocity), position(position) {}
     
     virtual ~IMovable() {}
@@ -60,5 +61,7 @@ protected:
     Vector velocity; // проекции вектора скорости на оси
     Vector position;
 };
+
+using PIMovable = std::shared_ptr<IMovable>;
 
 } // namespace Server

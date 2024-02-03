@@ -2,7 +2,6 @@
 
 #include "ICommand.h"
 #include "Rotable.h"
-#include <memory>
 
 namespace Server
 {
@@ -10,11 +9,11 @@ namespace Server
 class Rotate : public ICommand
 {
 public:
-    Rotate(std::shared_ptr<IRotable> r);
+    Rotate(PIRotable r);
     virtual ~Rotate() {}
     virtual void Execute() override;
 
-    std::shared_ptr<IRotable> r;
+    PIRotable r;
 };
 
 } // namespace Server

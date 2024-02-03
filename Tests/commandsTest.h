@@ -7,6 +7,7 @@
 #include "LogCommand.h"
 #include "testClasses.h"
 #include "RepeatCommand.h"
+#include "MacroCommand.h"
 
 // Проверка правильности движения    
 TEST(MOVABLE, MOVE_TEST)
@@ -85,4 +86,18 @@ TEST(REPEAT_COMMAND, REPEAT)
     EXPECT_CALL(*cmd, Execute());
     Server::RepeatCommand rcmd(cmd);
     rcmd.Execute();
+}
+
+TEST(MACRO_COMMAND, CMD_WITH_EXCEPTION)
+{
+    std::list<Server::PICommand> cmds;
+    auto cmd1 = std::make_shared<MockCommand>();
+    auto cmd2 = std::make_shared<MockCommand>();
+    EXPECT_CALL(*cmd1, Execute());
+    EXPECT_CALL(*cmd2, Execute())
+        .WillOnce(testing::Throw<TestExc>(TestExc()));
+    cmds.push_back(cmd1);
+    cmds.push_back(cmd2);
+    Server::MacroCommand macro(cmds);
+    EXPECT_ANY_THROW(macro.Execute());
 }
