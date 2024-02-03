@@ -9,10 +9,9 @@ namespace Server
 class Fuelable
 {
 public:
-    Fuelable(double fuel = 0.0, double moveBurningRate = 0.0, double rotateBurningRate = 0.0) :
+    Fuelable(double fuel = 0.0, double burningRate = 0.0) :
         fuel(fuel),
-        moveBurningRate(moveBurningRate),
-        rotateBurningRate(rotateBurningRate) { }
+        burningRate(burningRate){ }
 
     virtual ~Fuelable() { }
 
@@ -20,12 +19,8 @@ public:
         return fuel;
     }
 
-    double getMoveBurningRate() {
-        return moveBurningRate;
-    }
-
-    double getRotateBurningRate() {
-        return rotateBurningRate;
+    double getBurningRate() {
+        return burningRate;
     }
 
     void setFuel(double newFuel) {
@@ -34,8 +29,7 @@ public:
 
 protected:
     double fuel; // остаток топлива
-    double moveBurningRate; // скорость сжигания топлива при движении на одну единицу
-    double rotateBurningRate; //  скорость сжигания топлива при повороте на один сектор
+    double burningRate; // скорость сжигания топлива при движении/вращении на одну единицу
 };
     
 using PFuelable = std::shared_ptr<Fuelable>;

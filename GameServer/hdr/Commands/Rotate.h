@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ICommand.h"
-#include "Rotable.h"
+#include "Objects/Rotable.h"
 
 namespace Server
 {

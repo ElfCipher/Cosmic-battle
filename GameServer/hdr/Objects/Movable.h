@@ -56,6 +56,9 @@ public:
     void setPosition(Vector newV) {
         position = newV;
     }
+    void setVelocity(Vector newV) {
+        velocity = newV;
+    }
     
 protected:
     Vector velocity; // проекции вектора скорости на оси

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ICommand.h"
-#include "Fuelable.h"
+#include "Objects/Fuelable.h"
 
 namespace Server
 {

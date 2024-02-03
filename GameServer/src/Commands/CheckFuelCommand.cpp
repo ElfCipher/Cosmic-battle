@@ -10,8 +10,7 @@ CheckFuelCommand::CheckFuelCommand(PFuelable fuelable) :
 
 void CheckFuelCommand::Execute()
 {
-    if(fuelable->getFuel() - fuelable->getMoveBurningRate() <= 0.0 ||
-       fuelable->getFuel() - fuelable->getRotateBurningRate() <= 0.0)
+    if(fuelable->getFuel() - fuelable->getBurningRate() < 0.0)
        throw CheckFuelException(fuelable);
 }
 

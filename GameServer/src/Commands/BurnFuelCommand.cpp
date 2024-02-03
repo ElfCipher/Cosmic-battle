@@ -10,7 +10,7 @@ BurnFuelCommand::BurnFuelCommand(PFuelable fuelable) :
 
 void BurnFuelCommand::Execute()
 {
-    
+    fuelable->setFuel(fuelable->getFuel() - fuelable->getBurningRate());
 }
 
 } // namespace Server

@@ -8,6 +8,10 @@
 #include "testClasses.h"
 #include "RepeatCommand.h"
 #include "MacroCommand.h"
+#include "CheckFuelCommand.h"
+#include "BurnFuelCommand.h"
+#include "MoveWithBurning.h"
+#include "ChangeVelocityCommand.h"
 
 // Проверка правильности движения    
 TEST(MOVABLE, MOVE_TEST)
@@ -100,4 +104,88 @@ TEST(MACRO_COMMAND, CMD_WITH_EXCEPTION)
     cmds.push_back(cmd2);
     Server::MacroCommand macro(cmds);
     EXPECT_ANY_THROW(macro.Execute());
+}
+
+
+// Тесты сижагания топлива
+TEST(FUEL_OBJECT, INTERFACE_TEST)
+{
+    Server::Fuelable fuelable(100.0, 2.0);
+    EXPECT_DOUBLE_EQ(fuelable.getFuel(), 100.0);
+    EXPECT_DOUBLE_EQ(fuelable.getBurningRate(), 2.0);
+
+    fuelable.setFuel(50.0);
+    EXPECT_DOUBLE_EQ(fuelable.getFuel(), 50.0);
+}
+
+TEST(CHECK_FUEL_COMMAND, CHECKING)
+{
+    Server::PFuelable fuelable = std::make_shared<Server::Fuelable>(100.0, 2.0);
+    Server::CheckFuelCommand cmd(fuelable);
+    EXPECT_NO_THROW(cmd.Execute());
+
+    fuelable->setFuel(2.0);
+    EXPECT_NO_THROW(cmd.Execute());
+    
+    fuelable->setFuel(1.0);
+    EXPECT_ANY_THROW(cmd.Execute());
+}
+
+TEST(BURN_FUEL_COMMAND, BIRNUNG)
+{
+    auto fuelable = std::make_shared<Server::Fuelable>(100.0, 2.0);
+    Server::BurnFuelCommand cmd(fuelable);
+
+    cmd.Execute();
+    EXPECT_DOUBLE_EQ(fuelable->getFuel(), 100.0-2.0);
+}
+
+
+// Движение и сжигание топлива
+TEST(MOVE_WITH_BURNING_CMD, MOVE_AND_BURN_FUEL)
+{
+    Server::Vector startPosition(0, 0);
+    Server::Vector velocity(2, 2);
+    auto movable = std::make_shared<Server::IMovable>(velocity, startPosition);
+    auto fuelable = std::make_shared<Server::Fuelable>(100.0, 2.0);
+
+    Server::MoveWithBurning cmd(movable, fuelable);
+    cmd.Execute();
+
+    EXPECT_EQ(movable->getPosition(), startPosition + velocity);
+    EXPECT_DOUBLE_EQ(fuelable->getFuel(), 100.0 - 2.0);
+}
+
+
+// Изменение вектора скорости
+TEST(CHANGE_VELOCITY_COMMAND, RIGHT_ROTATION)
+{
+    Server::Vector velocity(0, 100); // вектор скорости = 0 гр
+    auto movable = std::make_shared<Server::IMovable>(velocity);
+
+    Server::ChangeVelocityCommand cmd(movable, 90.0); // поворот на 90 гр по часовой
+    cmd.Execute();
+    Server::Vector expectedVelocity(100, 0);
+    EXPECT_EQ(movable->getVelocity(), expectedVelocity);
+}
+
+TEST(CHANGE_VELOCITY_COMMAND, LEFT_ROTATION)
+{
+    Server::Vector velocity(100, 0); // вектор скорости = 90 гр
+    auto movable = std::make_shared<Server::IMovable>(velocity);
+
+    Server::ChangeVelocityCommand cmd(movable, -135.0); // поворот на 135 гр против часовой
+    cmd.Execute();
+    Server::Vector expectedVelocity(-70, 70);
+    EXPECT_EQ(movable->getVelocity(), expectedVelocity);
+}
+
+TEST(CHANGE_VELOCITY_COMMAND, ZERO_VELOCITY)
+{
+    auto movable = std::make_shared<Server::IMovable>(); // 0й вектор скорости
+
+    Server::ChangeVelocityCommand cmd(movable, -15.0); // поворот на 15 гр против часовой
+    cmd.Execute();
+    Server::Vector expectedVelocity(0, 0);
+    EXPECT_EQ(movable->getVelocity(), expectedVelocity);
 }
