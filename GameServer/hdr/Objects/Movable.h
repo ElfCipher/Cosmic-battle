@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <memory>
+#include <math.h>
 
 namespace Server
 {
@@ -16,6 +17,16 @@ struct Vector
     {
         this->x = other.x;
         this->y = other.y;
+    }
+    double GetDirection()
+    {
+        double angle;
+        if(y == 0 && x == 0)
+            throw "Zero X and Y";
+        else
+            angle = 180.0/M_PI*acos(x / sqrt(y*y + x*x));
+
+        return angle;
     }
     Vector& operator=(const Vector& other)
     {

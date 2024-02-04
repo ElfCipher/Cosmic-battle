@@ -12,6 +12,7 @@
 #include "BurnFuelCommand.h"
 #include "MoveWithBurning.h"
 #include "ChangeVelocityCommand.h"
+#include "RotateWithVelocity.h"
 
 // Проверка правильности движения    
 TEST(MOVABLE, MOVE_TEST)
@@ -160,10 +161,10 @@ TEST(MOVE_WITH_BURNING_CMD, MOVE_AND_BURN_FUEL)
 // Изменение вектора скорости
 TEST(CHANGE_VELOCITY_COMMAND, RIGHT_ROTATION)
 {
-    Server::Vector velocity(0, 100); // вектор скорости = 0 гр
+    Server::Vector velocity(0, 100); // вектор скорости = 90 гр
     auto movable = std::make_shared<Server::IMovable>(velocity);
 
-    Server::ChangeVelocityCommand cmd(movable, 90.0); // поворот на 90 гр по часовой
+    Server::ChangeVelocityCommand cmd(movable, 0.0); // поворот к 0 гр
     cmd.Execute();
     Server::Vector expectedVelocity(100, 0);
     EXPECT_EQ(movable->getVelocity(), expectedVelocity);
@@ -171,12 +172,12 @@ TEST(CHANGE_VELOCITY_COMMAND, RIGHT_ROTATION)
 
 TEST(CHANGE_VELOCITY_COMMAND, LEFT_ROTATION)
 {
-    Server::Vector velocity(100, 0); // вектор скорости = 90 гр
+    Server::Vector velocity(100, 0); // вектор скорости = 0 гр
     auto movable = std::make_shared<Server::IMovable>(velocity);
 
-    Server::ChangeVelocityCommand cmd(movable, -135.0); // поворот на 135 гр против часовой
+    Server::ChangeVelocityCommand cmd(movable, -135.0); // поворот к -135 гр
     cmd.Execute();
-    Server::Vector expectedVelocity(-70, 70);
+    Server::Vector expectedVelocity(-70, -70);
     EXPECT_EQ(movable->getVelocity(), expectedVelocity);
 }
 
@@ -184,8 +185,29 @@ TEST(CHANGE_VELOCITY_COMMAND, ZERO_VELOCITY)
 {
     auto movable = std::make_shared<Server::IMovable>(); // 0й вектор скорости
 
-    Server::ChangeVelocityCommand cmd(movable, -15.0); // поворот на 15 гр против часовой
+    Server::ChangeVelocityCommand cmd(movable, -15.0); // поворот к -15 гр
     cmd.Execute();
     Server::Vector expectedVelocity(0, 0);
+    EXPECT_EQ(movable->getVelocity(), expectedVelocity);
+}
+
+
+// Тест поворота с изменением вектора скорости
+TEST(ROTATE_WITH_VELOCITY, ROTATE)
+{
+    Server::Vector velocity(0, 100); // вектор скорости = 90 гр
+    auto movable = std::make_shared<Server::IMovable>(velocity);
+
+    int startDirection = 0;
+    int angularVelocity = 10;
+    auto rotable = std::make_shared<Server::IRotable>(startDirection, angularVelocity);
+
+    Server::RotateWithVelocity cmd(rotable, movable);
+    EXPECT_NO_THROW(cmd.Execute());
+
+    int expectedDirection = 10; // 0 + 10
+    EXPECT_EQ(expectedDirection, rotable->getDirection());   
+
+    Server::Vector expectedVelocity(-17, 98); // вектор скорости повернулся к 100 градусам (90 + 10)
     EXPECT_EQ(movable->getVelocity(), expectedVelocity);
 }

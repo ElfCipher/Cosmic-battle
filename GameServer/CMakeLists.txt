@@ -8,6 +8,7 @@ set(SOURCES
     src/Commands/MacroCommand.cpp
     src/Commands/ChangeVelocityCommand.cpp
     src/Commands/MoveWithBurning.cpp
+    src/Commands/RotateWithVelocity.cpp
     src/EventLoop.cpp
     src/ExceptionHandler.cpp
     src/Logger.cpp)
@@ -27,6 +28,7 @@ set(HEADERS
     hdr/Commands/MacroCommand.h
     hdr/Commands/ChangeVelocityCommand.h
     hdr/Commands/MoveWithBurning.h
+    hdr/Commands/RotateWithVelocity.h
     hdr/EventLoop.h
     hdr/Exception.h
     hdr/ExceptionHandler.h
