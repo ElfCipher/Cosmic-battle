@@ -3,14 +3,14 @@
 namespace Server
 {
 
-MacroCommand::MacroCommand(const CommandList& cdmList) :
-    cdmList(cdmList)
+MacroCommand::MacroCommand(const CommandList& cmdList) :
+    cmdList(cmdList)
 {
 }
 
 void MacroCommand::Execute()
 {
-    for (auto &&cmd : cdmList)
+    for (auto &&cmd : cmdList)
         cmd->Execute();
 }
 

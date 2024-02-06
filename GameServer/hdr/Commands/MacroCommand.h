@@ -11,12 +11,13 @@ using CommandList = std::list<PICommand>;
 class MacroCommand : public ICommand
 {
 public:
-    MacroCommand(const CommandList& cdmList);
+    MacroCommand(const CommandList& cmdList);
     virtual ~MacroCommand() { }
     virtual void Execute() override;
 
 protected:
-    CommandList cdmList;
+    MacroCommand() { }
+    CommandList cmdList;
 };
 
 } // namespace Server
