@@ -1,22 +1,17 @@
 #pragma once
 
 #include "MacroCommand.h"
-#include "CheckFuelCommand.h"
-#include "BurnFuelCommand.h"
-#include "Move.h"
+#include "Objects/Movable.h"
+#include "Objects/Fuelable.h"
 
 namespace Server
 {
     
-class MoveWithBurning : public ICommand
+class MoveWithBurning : public MacroCommand
 {
 public:
     MoveWithBurning(PIMovable movable, PFuelable fuelable);
     virtual ~MoveWithBurning() { }
-    virtual void Execute() override;
-
-protected:
-    std::unique_ptr<MacroCommand> macro;
 };
 
 } // namespace Server

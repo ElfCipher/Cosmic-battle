@@ -1,20 +1,17 @@
 #include "MoveWithBurning.h"
+#include "CheckFuelCommand.h"
+#include "BurnFuelCommand.h"
+#include "Move.h"
 
 namespace Server
 {
 
-MoveWithBurning::MoveWithBurning(PIMovable movable, PFuelable fuelable)
+MoveWithBurning::MoveWithBurning(PIMovable movable, PFuelable fuelable) :
+    MacroCommand()
 {
-    CommandList list;
-    list.emplace_back(std::make_shared<CheckFuelCommand>(fuelable));
-    list.emplace_back(std::make_shared<Move>(movable));
-    list.emplace_back(std::make_shared<BurnFuelCommand>(fuelable));
-    macro = std::make_unique<MacroCommand>(list);
-}
-
-void MoveWithBurning::Execute()
-{
-    macro->Execute();
+    cmdList.emplace_back(std::make_shared<CheckFuelCommand>(fuelable));
+    cmdList.emplace_back(std::make_shared<Move>(movable));
+    cmdList.emplace_back(std::make_shared<BurnFuelCommand>(fuelable));
 }
 
 } // namespace Server

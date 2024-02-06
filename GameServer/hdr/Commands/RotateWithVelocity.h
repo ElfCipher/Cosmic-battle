@@ -1,21 +1,17 @@
 #pragma once
 
-#include "Rotate.h"
-#include "ChangeVelocityCommand.h"
+#include "Objects/Rotable.h"
+#include "Objects/Movable.h"
 #include "MacroCommand.h"
 
 namespace Server
 {
 
-class RotateWithVelocity : public ICommand
+class RotateWithVelocity : public MacroCommand
 {
 public:
     RotateWithVelocity(PIRotable rotable, PIMovable movable);
     virtual ~RotateWithVelocity() { }
-    virtual void Execute() override;
-
-protected:
-    std::unique_ptr<MacroCommand> macro;
 };
 
 } // namespace Server
