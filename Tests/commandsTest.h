@@ -3,6 +3,10 @@
 #include <gtest/gtest.h>
 #include "Move.h"
 #include "Rotate.h"
+#include "EventLoop.h"
+#include "LogCommand.h"
+#include "testClasses.h"
+#include "RepeatCommand.h"
 
 // Проверка правильности движения    
 TEST(MOVABLE, MOVE_TEST)
@@ -63,4 +67,22 @@ TEST(ROTABLE, INTERFACE_TEST)
     int newDirection = -15;
     rotable->setDirection(newDirection);
     EXPECT_EQ(newDirection, rotable->getDirection());
+}
+
+
+// LogCommand test
+TEST(LOG_COMMAND, LOGGING)
+{
+    TestExc exc;
+    Server::LogCommand cmd(exc);
+    EXPECT_NO_THROW(cmd.Execute());
+}
+
+// RepeatCommand test
+TEST(REPEAT_COMMAND, REPEAT)
+{
+    auto cmd = std::make_shared<MockCommand>();
+    EXPECT_CALL(*cmd, Execute());
+    Server::RepeatCommand rcmd(cmd);
+    rcmd.Execute();
 }

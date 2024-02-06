@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
-#include "serverTest.h"
+#include "commandsTest.h"
+#include "eventLoopTest.h"
+#include "handlersTest.h"
 
 int main(int argc, char* argv[])
 {
