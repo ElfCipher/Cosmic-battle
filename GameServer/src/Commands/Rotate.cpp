@@ -3,7 +3,7 @@
 namespace Server
 {
 
-Rotate::Rotate(std::shared_ptr<IRotable> r) :
+Rotate::Rotate(PIRotable r) :
     r(r)
 {
 }

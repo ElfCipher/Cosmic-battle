@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <memory>
 
 namespace Server
 {
@@ -8,7 +9,7 @@ namespace Server
 class IRotable
 {
 public:
-    IRotable(int direction, int angularVelocity) :
+    IRotable(int direction = 0, int angularVelocity = 0) :
         direction(direction),
         angularVelocity(angularVelocity),
         directionsNumber(360) {}
@@ -33,5 +34,7 @@ protected:
     angularVelocity,
     directionsNumber;
 };
+
+using PIRotable = std::shared_ptr<IRotable>;
 
 } // namespace Server

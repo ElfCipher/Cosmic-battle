@@ -3,7 +3,7 @@
 namespace Server
 {
 
-Move::Move(std::shared_ptr<IMovable> m) :
+Move::Move(PIMovable m) :
     m(m)
 {
 }

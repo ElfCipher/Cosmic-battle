@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdint.h>
+#include <memory>
+#include <math.h>
 
 namespace Server
 {
@@ -10,11 +12,21 @@ struct Vector
     int64_t x, y;
 
     Vector(int64_t x, int64_t y): x(x), y(y) { }
-    Vector(): x(0), y(0) { }
+    Vector(): Vector(0, 0) { }
     Vector(const Vector& other)
     {
         this->x = other.x;
         this->y = other.y;
+    }
+    double GetDirection()
+    {
+        double angle;
+        if(y == 0 && x == 0)
+            throw "Zero X and Y";
+        else
+            angle = 180.0/M_PI*acos(x / sqrt(y*y + x*x));
+
+        return angle;
     }
     Vector& operator=(const Vector& other)
     {
@@ -41,7 +53,7 @@ struct Vector
 class IMovable
 {
 public:
-    IMovable(Vector velocity, Vector position) :
+    IMovable(Vector velocity = Vector(), Vector position = Vector()) :
         velocity(velocity), position(position) {}
     
     virtual ~IMovable() {}
@@ -55,10 +67,15 @@ public:
     void setPosition(Vector newV) {
         position = newV;
     }
+    void setVelocity(Vector newV) {
+        velocity = newV;
+    }
     
 protected:
     Vector velocity; // проекции вектора скорости на оси
     Vector position;
 };
+
+using PIMovable = std::shared_ptr<IMovable>;
 
 } // namespace Server
