@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Movable.h"
+#include "Objects/Movable.h"
 #include "ICommand.h"
-#include <memory>
 
 namespace Server
 {
@@ -10,11 +9,11 @@ namespace Server
 class Move : public ICommand
 {
 public:
-    Move(std::shared_ptr<IMovable> m);
+    Move(PIMovable m);
     virtual ~Move() {}
     virtual void Execute() override;
 
-    std::shared_ptr<IMovable> m;
+    PIMovable m;
 };
 
 } // namespace Server
