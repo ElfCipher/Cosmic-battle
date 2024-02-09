@@ -10,7 +10,7 @@ set(SOURCES
     src/Commands/MoveWithBurning.cpp
     src/Commands/RotateWithVelocity.cpp
     src/EventLoop.cpp
-    src/ExceptionHandler.cpp
+    src/Exceptions/ExceptionHandler.cpp
     src/Logger.cpp)
 
 set(HEADERS
@@ -30,8 +30,8 @@ set(HEADERS
     hdr/Commands/MoveWithBurning.h
     hdr/Commands/RotateWithVelocity.h
     hdr/EventLoop.h
-    hdr/Exception.h
-    hdr/ExceptionHandler.h
+    hdr/Exceptions/Exception.h
+    hdr/Exceptions/ExceptionHandler.h
     hdr/Handlers/CommonHandlers.h
     hdr/Logger.h)
 
@@ -39,4 +39,5 @@ add_library(${GAME_SERVER_NAME} SHARED ${HEADERS} ${SOURCES})
 target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Commands/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Handlers/
-                                               PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Objects/)
+                                               PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Objects/
+                                               PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Exceptions/)
