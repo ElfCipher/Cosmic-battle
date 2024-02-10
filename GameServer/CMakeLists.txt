@@ -32,8 +32,10 @@ set(HEADERS
     hdr/EventLoop.h
     hdr/Exceptions/Exception.h
     hdr/Exceptions/ExceptionHandler.h
+    hdr/Exceptions/ArgumentException.h
     hdr/Handlers/CommonHandlers.h
-    hdr/Logger.h)
+    hdr/Logger.h
+    hdr/IoC.h)
 
 add_library(${GAME_SERVER_NAME} SHARED ${HEADERS} ${SOURCES})
 target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/
