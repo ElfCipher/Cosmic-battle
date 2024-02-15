@@ -2,6 +2,7 @@
 #include "commandsTest.h"
 #include "eventLoopTest.h"
 #include "handlersTest.h"
+#include "iocTest.h"
 
 int main(int argc, char* argv[])
 {
