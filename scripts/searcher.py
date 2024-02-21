@@ -5,6 +5,7 @@ import io
 
 class Searcher():
     """Ищет рекурсивно файлы в директории rootDir, которые содержат классы, обозначенные словом label"""
+
     def __init__(self, rootDir: string, label: string) -> None:
         self._root = rootDir
         self._label = label
@@ -32,7 +33,7 @@ class Searcher():
             for line in file:
                 if self._label in line:
                     toPush = self._make_dict(file)
-                    if(type(toPush) != type(None)):
+                    if (type(toPush) != type(None)):
                         self._class_list.append(toPush)
 
     def _find_namespace(self, file: io.TextIOWrapper) -> list:
@@ -52,12 +53,12 @@ class Searcher():
             pass
 
         return namespaces
-    
+
     def _find_methods(self, file: io.TextIOWrapper) -> list:
         methods = list()
         for line in file:
             line = line.replace('\n', '')
-            if line.endswith(('};', '} ;')): # последняя строка класса
+            if line.endswith(('};', '} ;')):  # последняя строка класса
                 break
             if line.find('public:') != -1:
                 continue
@@ -66,15 +67,16 @@ class Searcher():
             closeBrace = line.find(')')
             if openBrace == -1 or closeBrace == -1:
                 continue
-            if line.find('virtual') == -1: # ключевое слово
+            if line.find('virtual') == -1:  # ключевое слово
                 continue
-            if not line.endswith(('=0;', '= 0;', '=0 ;', '= 0 ;')): # чисто виртуальный метод
+            # чисто виртуальный метод
+            if not line.endswith(('=0;', '= 0;', '=0 ;', '= 0 ;')):
                 continue
 
             words = line.split()
             if len(words) < 3:      # 1. virtual 2. возвращаемое значение 3. имя метода
                 continue
-            
+
             method = dict()
             method['return'] = words[1]
             method['name'] = words[2].split('(')[0]
@@ -86,9 +88,9 @@ class Searcher():
                 for arg in args:
                     pair = tuple(arg.split(' '))
                     method['args'].append(pair)
-            
+
             methods.append(method)
-        
+
         return methods
 
     def _make_dict(self, file: io.TextIOWrapper) -> dict:
@@ -116,4 +118,3 @@ class Searcher():
         nDict['methods'] = self._find_methods(file)
 
         return nDict
-    

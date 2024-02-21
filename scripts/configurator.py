@@ -2,8 +2,10 @@ import io
 import os
 import string
 
+
 class Configurator():
     """Создаёт в папке dir файлы с адаптерами интерфейсов, описанные в interfaces"""
+
     def __init__(self, interfaces: list, dir: string) -> None:
         self._interfaces = interfaces
         self._dir = dir
@@ -18,13 +20,13 @@ class Configurator():
             self._handle_interface(interface)
 
         return self._file_list
-    
-    def _handle_interface(self, interface : dict):
+
+    def _handle_interface(self, interface: dict):
         methods = list(interface['methods'])
         if not len(methods):
             print("No methods")
             return
-        
+
         className = interface['class']
         filename = f"{className}_adapter.h"
 
@@ -32,7 +34,7 @@ class Configurator():
         if not file:
             print(f"Failed open {filename} in {self._dir}")
             return
-        
+
         line = f"#pragma once\n\n#include \"{className}.h\"\n\n"
 
         namespaces = interface.get('namespaces')
@@ -62,7 +64,7 @@ class Configurator():
         file.close()
         self._file_list.append(filename)
 
-    def _handle_method(self, method : dict) -> str:
+    def _handle_method(self, method: dict) -> str:
         returnType = method['return']
         methodName = method['name']
         line = f"\tvirtual {returnType} {methodName}("
@@ -77,7 +79,7 @@ class Configurator():
                 line += f"{type} {name}, "
 
             line = line[:-2]
-        
+
         line += ") override\n\t{\n\t\t"
 
         if returnType == 'void':
@@ -89,7 +91,7 @@ class Configurator():
 
         for type in types:
             ioc += f"{type}, "
-        
+
         ioc = ioc[:-2]
         ioc += f">(\"{methodName}\", obj, "
 
@@ -99,8 +101,7 @@ class Configurator():
         ioc = ioc[:-2]
         if returnType == 'void':
             ioc += ").Execute("
-        
+
         ioc += ");\n\t"
         line += ioc + "}\n"
         return line
-
