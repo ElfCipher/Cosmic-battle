@@ -48,8 +48,6 @@ set(HEADERS
 
 add_subdirectory(auto_adapters)
 add_library(${GAME_SERVER_NAME} SHARED ${HEADERS} ${SOURCES})
-add_custom_command(TARGET ${GAME_SERVER_NAME} PRE_BUILD COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/main.py)
-
 target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Commands/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Handlers/
