@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Objects/Rotable.h"
-#include "Objects/Movable.h"
+#include "Objects/IRotable.h"
+#include "Objects/IMovable.h"
 #include "MacroCommand.h"
 
 namespace Server

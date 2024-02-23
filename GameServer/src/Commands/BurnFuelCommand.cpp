@@ -3,7 +3,7 @@
 namespace Server
 {
 
-BurnFuelCommand::BurnFuelCommand(PFuelable fuelable) :
+BurnFuelCommand::BurnFuelCommand(PIFuelable fuelable) :
     fuelable(fuelable)
 {
 }
