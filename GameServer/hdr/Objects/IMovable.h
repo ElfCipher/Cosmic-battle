@@ -50,30 +50,15 @@ struct Vector
     }
 };
 
+
+// [[Adaptable]]
 class IMovable
 {
 public:
-    IMovable(Vector velocity = Vector(), Vector position = Vector()) :
-        velocity(velocity), position(position) {}
-    
-    virtual ~IMovable() {}
-
-    Vector getPosition() {
-        return position;
-    }
-    Vector getVelocity() {
-        return velocity;
-    }
-    void setPosition(Vector newV) {
-        position = newV;
-    }
-    void setVelocity(Vector newV) {
-        velocity = newV;
-    }
-    
-protected:
-    Vector velocity; // проекции вектора скорости на оси
-    Vector position;
+    virtual Vector getPosition() = 0;
+    virtual Vector getVelocity() = 0;
+    virtual void setPosition(Vector newV) = 0;
+    virtual void setVelocity(Vector newV) = 0;
 };
 
 using PIMovable = std::shared_ptr<IMovable>;

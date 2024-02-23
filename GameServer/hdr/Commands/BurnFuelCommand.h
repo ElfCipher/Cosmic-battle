@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ICommand.h"
-#include "Objects/Fuelable.h"
+#include "Objects/IFuelable.h"
 
 namespace Server
 {
@@ -9,12 +9,12 @@ namespace Server
 class BurnFuelCommand : public ICommand
 {
 public:
-    BurnFuelCommand(PFuelable fuelable);
+    BurnFuelCommand(PIFuelable fuelable);
     virtual ~BurnFuelCommand() { }
     virtual void Execute() override;
 
 protected:
-    PFuelable fuelable;
+    PIFuelable fuelable;
 };
     
 } // namespace Server

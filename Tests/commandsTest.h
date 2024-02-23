@@ -19,7 +19,7 @@ TEST(MOVABLE, MOVE_TEST)
 {
     Server::Vector startPosition(12, 5);
     Server::Vector velocity(-7, 3);
-    auto movable = std::make_shared<Server::IMovable>(startPosition, velocity);
+    Server::PIMovable movable = std::make_shared<TestMovable>(startPosition, velocity);
     Server::Move move(movable);
     move.Execute();
     Server::Vector finishPosition = movable->getPosition();
@@ -32,7 +32,7 @@ TEST(MOVABLE, INTERFACE_TEST)
 {
     Server::Vector startPosition(12, 5);
     Server::Vector velocity(-7, 3);
-    auto movable = std::make_shared<Server::IMovable>(velocity, startPosition);
+    Server::PIMovable movable = std::make_shared<TestMovable>(velocity, startPosition);
 
     EXPECT_EQ(startPosition, movable->getPosition()); // читаем положение
 
@@ -50,7 +50,7 @@ TEST(ROTABLE, ROTATE_TEST)
 {
     int startDirection = 0;
     int angularVelocity = 10;
-    auto rotable = std::make_shared<Server::IRotable>(startDirection, angularVelocity);
+    Server::PIRotable rotable = std::make_shared<TestRotable>(startDirection, angularVelocity);
     Server::Rotate rotate(rotable);
     rotate.Execute();
     int finishDirection = rotable->getDirection();
@@ -64,7 +64,7 @@ TEST(ROTABLE, INTERFACE_TEST)
 {
     int startDirection = 0;
     int angularVelocity = 10;
-    auto rotable = std::make_shared<Server::IRotable>(startDirection, angularVelocity);
+    Server::PIRotable rotable = std::make_shared<TestRotable>(startDirection, angularVelocity);
 
     EXPECT_EQ(startDirection, rotable->getDirection()); // читаем направление
 
@@ -111,7 +111,7 @@ TEST(MACRO_COMMAND, CMD_WITH_EXCEPTION)
 // Тесты сижагания топлива
 TEST(FUEL_OBJECT, INTERFACE_TEST)
 {
-    Server::Fuelable fuelable(100.0, 2.0);
+    TestFuelable fuelable(100.0, 2.0);
     EXPECT_DOUBLE_EQ(fuelable.getFuel(), 100.0);
     EXPECT_DOUBLE_EQ(fuelable.getBurningRate(), 2.0);
 
@@ -121,7 +121,7 @@ TEST(FUEL_OBJECT, INTERFACE_TEST)
 
 TEST(CHECK_FUEL_COMMAND, CHECKING)
 {
-    Server::PFuelable fuelable = std::make_shared<Server::Fuelable>(100.0, 2.0);
+    Server::PIFuelable fuelable = std::make_shared<TestFuelable>(100.0, 2.0);
     Server::CheckFuelCommand cmd(fuelable);
     EXPECT_NO_THROW(cmd.Execute());
 
@@ -134,7 +134,7 @@ TEST(CHECK_FUEL_COMMAND, CHECKING)
 
 TEST(BURN_FUEL_COMMAND, BIRNUNG)
 {
-    auto fuelable = std::make_shared<Server::Fuelable>(100.0, 2.0);
+    Server::PIFuelable fuelable = std::make_shared<TestFuelable>(100.0, 2.0);
     Server::BurnFuelCommand cmd(fuelable);
 
     cmd.Execute();
@@ -147,8 +147,8 @@ TEST(MOVE_WITH_BURNING_CMD, MOVE_AND_BURN_FUEL)
 {
     Server::Vector startPosition(0, 0);
     Server::Vector velocity(2, 2);
-    auto movable = std::make_shared<Server::IMovable>(velocity, startPosition);
-    auto fuelable = std::make_shared<Server::Fuelable>(100.0, 2.0);
+    Server::PIMovable movable = std::make_shared<TestMovable>(velocity, startPosition);
+    Server::PIFuelable fuelable = std::make_shared<TestFuelable>(100.0, 2.0);
 
     Server::MoveWithBurning cmd(movable, fuelable);
     cmd.Execute();
@@ -162,7 +162,7 @@ TEST(MOVE_WITH_BURNING_CMD, MOVE_AND_BURN_FUEL)
 TEST(CHANGE_VELOCITY_COMMAND, RIGHT_ROTATION)
 {
     Server::Vector velocity(0, 100); // вектор скорости = 90 гр
-    auto movable = std::make_shared<Server::IMovable>(velocity);
+    Server::PIMovable movable = std::make_shared<TestMovable>(velocity);
 
     Server::ChangeVelocityCommand cmd(movable, 0.0); // поворот к 0 гр
     cmd.Execute();
@@ -173,7 +173,7 @@ TEST(CHANGE_VELOCITY_COMMAND, RIGHT_ROTATION)
 TEST(CHANGE_VELOCITY_COMMAND, LEFT_ROTATION)
 {
     Server::Vector velocity(100, 0); // вектор скорости = 0 гр
-    auto movable = std::make_shared<Server::IMovable>(velocity);
+    Server::PIMovable movable = std::make_shared<TestMovable>(velocity);
 
     Server::ChangeVelocityCommand cmd(movable, -135.0); // поворот к -135 гр
     cmd.Execute();
@@ -183,7 +183,7 @@ TEST(CHANGE_VELOCITY_COMMAND, LEFT_ROTATION)
 
 TEST(CHANGE_VELOCITY_COMMAND, ZERO_VELOCITY)
 {
-    auto movable = std::make_shared<Server::IMovable>(); // 0й вектор скорости
+    Server::PIMovable movable = std::make_shared<TestMovable>(); // 0й вектор скорости
 
     Server::ChangeVelocityCommand cmd(movable, -15.0); // поворот к -15 гр
     cmd.Execute();
@@ -196,11 +196,11 @@ TEST(CHANGE_VELOCITY_COMMAND, ZERO_VELOCITY)
 TEST(ROTATE_WITH_VELOCITY, ROTATE)
 {
     Server::Vector velocity(0, 100); // вектор скорости = 90 гр
-    auto movable = std::make_shared<Server::IMovable>(velocity);
+    Server::PIMovable movable = std::make_shared<TestMovable>(velocity);
 
     int startDirection = 0;
     int angularVelocity = 10;
-    auto rotable = std::make_shared<Server::IRotable>(startDirection, angularVelocity);
+    Server::PIRotable rotable = std::make_shared<TestRotable>(startDirection, angularVelocity);
 
     Server::RotateWithVelocity cmd(rotable, movable);
     EXPECT_NO_THROW(cmd.Execute());

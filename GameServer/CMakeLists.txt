@@ -15,9 +15,10 @@ set(SOURCES
     src/Logger.cpp)
 
 set(HEADERS
-    hdr/Objects/Movable.h
-    hdr/Objects/Rotable.h
-    hdr/Objects/Fuelable.h
+    hdr/Objects/IMovable.h
+    hdr/Objects/IRotable.h
+    hdr/Objects/IFuelable.h
+    hdr/Objects/UObject.h
     hdr/Commands/ICommand.h
     hdr/Commands/Move.h
     hdr/Commands/Rotate.h

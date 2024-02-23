@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ICommand.h"
-#include "Objects/Movable.h"
+#include "Objects/IMovable.h"
 
 namespace Server
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ICommand.h"
-#include "Objects/Fuelable.h"
+#include "Objects/IFuelable.h"
 #include <Exception.h>
 #include <sstream>
 
@@ -11,14 +11,14 @@ namespace Server
 class CheckFuelCommand : public ICommand
 {
 public:
-    CheckFuelCommand(PFuelable fuelable);
+    CheckFuelCommand(PIFuelable fuelable);
     virtual ~CheckFuelCommand() { }
     virtual void Execute() override;
 
     class CheckFuelException : public Exception
     {
     public:
-        CheckFuelException(PFuelable fuelable) {
+        CheckFuelException(PIFuelable fuelable) {
             std::stringstream ss;
             ss << "Object " << typeid(*fuelable).name() << " has only " << fuelable->getFuel() << " fuel";
             msg = ss.str();
@@ -27,7 +27,7 @@ public:
     };
 
 protected:
-    PFuelable fuelable;
+    PIFuelable fuelable;
 };
 
 } // namespace Server

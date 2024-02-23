@@ -1,8 +1,8 @@
 #pragma once
 
 #include "MacroCommand.h"
-#include "Objects/Movable.h"
-#include "Objects/Fuelable.h"
+#include "Objects/IMovable.h"
+#include "Objects/IFuelable.h"
 
 namespace Server
 {
@@ -10,7 +10,7 @@ namespace Server
 class MoveWithBurning : public MacroCommand
 {
 public:
-    MoveWithBurning(PIMovable movable, PFuelable fuelable);
+    MoveWithBurning(PIMovable movable, PIFuelable fuelable);
     virtual ~MoveWithBurning() { }
 };
 

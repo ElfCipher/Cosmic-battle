@@ -3,7 +3,7 @@
 namespace Server
 {
 
-CheckFuelCommand::CheckFuelCommand(PFuelable fuelable) :
+CheckFuelCommand::CheckFuelCommand(PIFuelable fuelable) :
     fuelable(fuelable)
 {
 }

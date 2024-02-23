@@ -6,7 +6,7 @@
 namespace Server
 {
 
-MoveWithBurning::MoveWithBurning(PIMovable movable, PFuelable fuelable) :
+MoveWithBurning::MoveWithBurning(PIMovable movable, PIFuelable fuelable) :
     MacroCommand()
 {
     cmdList.emplace_back(std::make_shared<CheckFuelCommand>(fuelable));
