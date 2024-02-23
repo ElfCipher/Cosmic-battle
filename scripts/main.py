@@ -1,4 +1,3 @@
-from cgi import print_arguments
 from searcher import Searcher
 from configurator import Configurator
 from cmake_creator import CmakeCreator

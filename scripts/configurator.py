@@ -49,7 +49,9 @@ class Configurator():
         line = f"class Adapter{className} : public {className}\n"
         file.write(line)
 
-        line = '{\n\tUObject obj;\n\tIoC ioc;\npublic:\n'
+        line = f"""{{\n\tPUObject obj;\n\tIoC ioc;\npublic:
+    Adapter{className}(PUObject obj) :
+        obj(obj) {{}}\n"""
 
         file.write(line)
 
@@ -90,7 +92,7 @@ class Configurator():
         else:
             ioc = f"return *ioc.Resolve<{returnType}, "
 
-        ioc += "UObject, "
+        ioc += "PUObject, "
 
         for type in types:
             ioc += f"{type}, "
