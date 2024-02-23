@@ -88,7 +88,7 @@ class Configurator():
         if returnType == 'void':
             ioc = "ioc.Resolve<ICommand, "
         else:
-            ioc = f"return ioc.Resolve<{returnType}, "
+            ioc = f"return *ioc.Resolve<{returnType}, "
 
         ioc += "UObject, "
 
@@ -107,7 +107,7 @@ class Configurator():
 
         ioc = ioc[:-2]
         if returnType == 'void':
-            ioc += ").Execute("
+            ioc += ")->Execute("
 
         ioc += ");\n\t"
         line += ioc + "}\n"

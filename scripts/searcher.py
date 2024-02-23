@@ -19,7 +19,7 @@ class Searcher():
 
     def _find_file(self, rootDir: string):
         """Ищет файлы в директории"""
-        print('Looking for in ' + rootDir)
+        print("Looking label for in " + rootDir)
         for dir in os.listdir(rootDir):
             abs_path = os.path.join(rootDir, dir)
             if os.path.isdir(abs_path):
@@ -34,6 +34,7 @@ class Searcher():
                 if self._label in line:
                     toPush = self._make_dict(file)
                     if (type(toPush) != type(None)):
+                        print(f"Founded interface {toPush['class']}")
                         self._class_list.append(toPush)
 
     def _find_namespace(self, file: io.TextIOWrapper) -> list:
