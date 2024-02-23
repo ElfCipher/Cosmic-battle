@@ -28,14 +28,17 @@ class Configurator():
             return
 
         className = interface['class']
-        filename = f"{className}_adapter.h"
+        filename = f"Adapter{className}.h"
 
         file = io.open(self._dir + '/' + filename, "w")
         if not file:
             print(f"Failed open {filename} in {self._dir}")
             return
 
-        line = f"#pragma once\n\n#include \"{className}.h\"\n\n"
+        line = f"""#pragma once\n\n#include \"Objects/{className}.h\"
+#include \"Objects/UObject.h\"
+#include \"IoC.h\"
+                    \n"""
 
         namespaces = interface.get('namespaces')
         if namespaces:
@@ -46,12 +49,12 @@ class Configurator():
         line = f"class Adapter{className} : public {className}\n"
         file.write(line)
 
-        line = '{\n\tUObject obj;\npublic:\n'
+        line = '{\n\tUObject obj;\n\tIoC ioc;\npublic:\n'
 
         file.write(line)
 
         for method in methods:
-            line = self._handle_method(method)
+            line = self._handle_method(className, method, namespaces)
             file.write(line)
 
         line = "};\n\n"
@@ -64,7 +67,7 @@ class Configurator():
         file.close()
         self._file_list.append(filename)
 
-    def _handle_method(self, method: dict) -> str:
+    def _handle_method(self, className: str, method: dict, namespaces: list) -> str:
         returnType = method['return']
         methodName = method['name']
         line = f"\tvirtual {returnType} {methodName}("
@@ -92,8 +95,12 @@ class Configurator():
         for type in types:
             ioc += f"{type}, "
 
-        ioc = ioc[:-2]
-        ioc += f">(\"{methodName}\", obj, "
+        ioc = ioc[:-2] + ">(\""
+
+        for namespace in namespaces:
+            ioc += f"{namespace}."
+
+        ioc += f"{className}.{methodName}\", obj, "
 
         for name in names:
             ioc += f"{name}, "
