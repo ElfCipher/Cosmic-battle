@@ -37,6 +37,9 @@ set(HEADERS
     hdr/Commands/InitIoC.h
     hdr/Commands/SetCurrentScope.h
     hdr/Commands/ClearCurrentScope.h
+    hdr/Commands/StartLoop.h
+    hdr/Commands/SoftStopLoop.h
+    hdr/Commands/HardStopLoop.h
     hdr/EventLoop.h
     hdr/Exceptions/Exception.h
     hdr/Exceptions/ExceptionHandler.h
@@ -44,6 +47,8 @@ set(HEADERS
     hdr/Handlers/CommonHandlers.h
     hdr/Logger.h
     hdr/IoC.h
+    hdr/ConcurrentQueue.h
+    hdr/ManualResetEvent.h
 )
 
 add_subdirectory(auto_adapters)

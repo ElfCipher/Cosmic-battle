@@ -8,16 +8,6 @@
 namespace Server
 {
 
-Handler addLogCmdInQueue = [](PICommand cmd, const Exception& exc) -> PICommand {
-    EventLoop::Locate().Put(std::make_shared<LogCommand>(exc));
-    return makeDummy();
-};
-
-Handler addRepeatCmdInQueue = [](PICommand cmd, const Exception& exc) -> PICommand {
-    EventLoop::Locate().Put(std::make_shared<RepeatCommand>(cmd));
-    return makeDummy();
-};
-
 Handler repeatAndLogInCase = [](PICommand cmd, const Exception& exc) -> PICommand {
     RepeatCommand rcmd(cmd);
     try

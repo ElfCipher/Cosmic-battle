@@ -1,11 +1,8 @@
 #pragma once
 
-#include <queue>
-#include <mutex>
+#include "ConcurrentQueue.h"
 #include <thread>
 #include <memory>
-#include <semaphore>
-#include "ICommand.h"
 #include "ExceptionHandler.h"
 
 namespace Server
@@ -14,36 +11,33 @@ namespace Server
 class EventLoop
 {
 public:
-    // sync start (blocking)
+    EventLoop(PCQueue<PICommand> q);
+    ~EventLoop();
+    /// sync start (blocking)
     int Start();
-    void Stop();
+    void Stop() {
+        isStarted = false;
+    }
     bool IsStarted() {
         return isStarted;
     }
-    
-    void Put(PICommand cmd);
-    static EventLoop& Locate();
+
+    using Action = std::function<void()>;
+    void UpdateBehaviour(Action behaviour) {
+        this->behaviour = behaviour;
+    }
 
     ExceptionHandler& GetHandler() {
         return handler;
     }
 
-    size_t GetCommandsNum() {
-        std::scoped_lock lk(mut);
-        return queue.size();
-    }
-
-    ~EventLoop();
+    PCQueue<PICommand> queue;
 
 private:
-    EventLoop();
     void Exec();
-    
-    bool isStarted = false;
+    Action behaviour;
+    bool isStarted;
     std::thread thread;
-    std::mutex mut;
-    std::queue<PICommand> queue;
-    std::binary_semaphore qSem{0};
     std::binary_semaphore startSem{0};
     ExceptionHandler handler;
 };
