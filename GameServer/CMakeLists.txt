@@ -12,7 +12,9 @@ set(SOURCES
     src/Commands/InitIoC.cpp
     src/EventLoop.cpp
     src/Exceptions/ExceptionHandler.cpp
-    src/Logger.cpp)
+    src/Logger.cpp
+    src/IoC.cpp
+)
 
 set(HEADERS
     hdr/Objects/IMovable.h
@@ -41,11 +43,17 @@ set(HEADERS
     hdr/Exceptions/ArgumentException.h
     hdr/Handlers/CommonHandlers.h
     hdr/Logger.h
-    hdr/IoC.h)
+    hdr/IoC.h
+)
 
+add_subdirectory(auto_adapters)
 add_library(${GAME_SERVER_NAME} SHARED ${HEADERS} ${SOURCES})
 target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Commands/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Handlers/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Objects/
-                                               PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Exceptions/)
+                                               PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Exceptions/
+                                               PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/auto_adapters
+)
+
+target_link_libraries(${GAME_SERVER_NAME} adapters)

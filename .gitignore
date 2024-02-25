@@ -33,3 +33,7 @@
 
 build/
 .vscode/
+
+__pycache__/
+
+auto_adapters/
