@@ -1,6 +1,5 @@
 from searcher import Searcher
 from configurator import Configurator
-from cmake_creator import CmakeCreator
 import sys
 
 print("Start " + sys.argv[0])
@@ -21,8 +20,3 @@ if not len(files_name):
     print("Failed configure adapters")
     exit(1)
 
-creator = CmakeCreator()
-
-if not creator.create(files_name, build_path):
-    print("Failed create CMakeLists.txt")
-    exit(1)

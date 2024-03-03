@@ -51,7 +51,6 @@ set(HEADERS
     hdr/ManualResetEvent.h
 )
 
-add_subdirectory(auto_adapters)
 add_library(${GAME_SERVER_NAME} SHARED ${HEADERS} ${SOURCES})
 target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Commands/
@@ -60,5 +59,3 @@ target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Exceptions/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/auto_adapters
 )
-
-target_link_libraries(${GAME_SERVER_NAME} adapters)
