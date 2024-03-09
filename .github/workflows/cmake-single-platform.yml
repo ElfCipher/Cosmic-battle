@@ -21,16 +21,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Git Submodule
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
     
     - name: Install packets
       run: sudo apt-get install libgtest-dev libgmock-dev docker-compose libevent-dev
     
     - name: Preconfiguration
       run: python ${{github.workspace}}/scripts/main.py ${{github.workspace}}/GameServer/hdr ${{github.workspace}}/GameServer/auto_adapters
-      
-    - name: Git Submodule
-      with:
-        submodules: recursive
       
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
