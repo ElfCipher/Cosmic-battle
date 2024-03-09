@@ -5,17 +5,18 @@
 
 TEST(ENDPOINT, RABBITMQ_CONNECT)
 {
-    
     Server::Endpoint* endpoint = new Server::Endpoint;
-
-    endpoint->Start([=](std::string result){
+    bool isTestPassed = false;
+    
+    endpoint->Start([&](std::string result){
         endpoint->Stop();
-        if(result == "OK")
-            SUCCEED();
-        else
-        {
+        isTestPassed = result == "OK";
+        if(!isTestPassed)
             std::cerr << result << std::endl;
-            FAIL();
-        }
     });
+
+    if(!isTestPassed)
+        FAIL();
+
+    delete endpoint;
 }
