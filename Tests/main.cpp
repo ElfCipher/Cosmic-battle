@@ -4,6 +4,7 @@
 #include "handlersTest.h"
 #include "iocTest.h"
 #include "adaptersTest.h"
+#include "endpointTest.h"
 
 int main(int argc, char* argv[])
 {

@@ -12,6 +12,7 @@ set(HEADERS
     handlersTest.h
     iocTest.h
     adaptersTest.h
+    endpointTest.h
 )
 
 add_executable(${PROJECT_NAME}_test ${SOURCES} ${HEADERS})

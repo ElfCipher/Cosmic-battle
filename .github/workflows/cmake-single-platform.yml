@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Install gtest
-      run: sudo apt-get install libgtest-dev libgmock-dev
+      run: sudo apt-get install libgtest-dev libgmock-dev docker-compose libevent-dev
     
     - name: Preconfiguration
       run: python ${{github.workspace}}/scripts/main.py ${{github.workspace}}/GameServer/hdr ${{github.workspace}}/GameServer/auto_adapters
@@ -31,14 +31,18 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DAMQP-CPP_LINUX_TCP=True
 
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
+    - name: Start RabbitMQ docker
+      working-directory: ${{github.workspace}}/scripts/
+      run: sudo docker-compose up -d
+
     - name: Test
       working-directory: ${{github.workspace}}/build/Tests
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+      run: ctest -C ${{env.BUILD_TYPE}} --timeout 10
