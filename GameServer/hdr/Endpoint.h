@@ -21,6 +21,13 @@ public:
     void Start(Callback callback);
     void Stop();
     virtual void onConnected(AMQP::TcpConnection *connection) override;
+    virtual void onError(AMQP::TcpConnection *connection, const char *message) override;
+    virtual void onClosed(AMQP::TcpConnection *connection) override {
+        std::cout << "Close connection" << std::endl;
+    }
+    virtual void onLost(AMQP::TcpConnection *connection) override {
+        std::cout << "Lost connection" << std::endl;
+    }
 
 private:
     uint32_t id;

@@ -28,6 +28,10 @@ jobs:
     
     - name: Install packets
       run: sudo apt-get install libgtest-dev libgmock-dev docker-compose libevent-dev
+
+    - name: Start RabbitMQ docker
+      working-directory: ${{github.workspace}}/scripts/
+      run: sudo docker-compose up -d
     
     - name: Preconfiguration
       run: python ${{github.workspace}}/scripts/main.py ${{github.workspace}}/GameServer/hdr ${{github.workspace}}/GameServer/auto_adapters
@@ -40,10 +44,6 @@ jobs:
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-    - name: Start RabbitMQ docker
-      working-directory: ${{github.workspace}}/scripts/
-      run: sudo docker-compose up -d
 
     - name: Test0
       working-directory: ${{github.workspace}}/build/Tests

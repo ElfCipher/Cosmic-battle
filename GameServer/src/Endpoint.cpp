@@ -59,4 +59,9 @@ void Endpoint::onConnected(AMQP::TcpConnection *connection)
     });
 }
 
+void Endpoint::onError(AMQP::TcpConnection *connection, const char *message)
+{
+    std::cerr << message << std::endl;
+}
+
 } // namespace Server
