@@ -2,21 +2,29 @@
 
 #include <gtest/gtest.h>
 #include "Endpoint.h"
+#include "ManualResetEvent.h"
 
 TEST(ENDPOINT, RABBITMQ_CONNECT)
 {
-    Server::Endpoint* endpoint = new Server::Endpoint;
-    bool isTestPassed = false;
+    using namespace Server;
+
+    auto queue = std::make_shared<ConcurrentQueue<PICommand>>();
+    Endpoint* endpoint = new Endpoint(queue);
+    bool isEndpointStarted = false;
+    ManualResetEvent mre;
     
     endpoint->Start([&](std::string result){
-        endpoint->Stop();
-        isTestPassed = result == "OK";
-        if(!isTestPassed)
+        isEndpointStarted = result == "OK";
+        if(!isEndpointStarted)
             std::cerr << result << std::endl;
+        mre.Set();
     });
 
-    if(!isTestPassed)
-        FAIL();
+    mre.WaitOne();
+    EXPECT_TRUE(isEndpointStarted);
+
+    queue->Get()->Execute();
+    endpoint->Stop();
 
     delete endpoint;
 }

@@ -10,6 +10,7 @@ set(SOURCES
     src/Commands/MoveWithBurning.cpp
     src/Commands/RotateWithVelocity.cpp
     src/Commands/InitIoC.cpp
+    src/Commands/InterpretCommand.cpp
     src/EventLoop.cpp
     src/Exceptions/ExceptionHandler.cpp
     src/Logger.cpp
@@ -41,6 +42,7 @@ set(HEADERS
     hdr/Commands/StartLoop.h
     hdr/Commands/SoftStopLoop.h
     hdr/Commands/HardStopLoop.h
+    hdr/Commands/InterpretCommand.h
     hdr/EventLoop.h
     hdr/Exceptions/Exception.h
     hdr/Exceptions/ExceptionHandler.h
