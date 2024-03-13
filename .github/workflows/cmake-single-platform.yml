@@ -27,7 +27,7 @@ jobs:
         submodules: recursive
     
     - name: Install packets
-      run: sudo apt-get install libgtest-dev libgmock-dev docker-compose libevent-dev
+      run: sudo apt-get install libgtest-dev libgmock-dev docker-compose libevent-dev libjsoncpp-dev
 
     # Стартуем пораньше, чтобы успел прогрузиться докер
     - name: Start RabbitMQ docker

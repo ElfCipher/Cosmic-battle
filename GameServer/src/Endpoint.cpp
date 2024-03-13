@@ -5,9 +5,10 @@
 namespace Server
 {
 
-Endpoint::Endpoint(PCQueue<PICommand> queue, uint64_t id):
+Endpoint::Endpoint(PCQueue<PICommand> queue, PUObjects objects, uint64_t id):
     AMQP::LibEventHandler(evbase = event_base_new()),
     queue(queue),
+    objects(objects),
     id(id),
     callback([](std::string str){})
 {
@@ -28,10 +29,10 @@ void Endpoint::Start(Callback callback)
 {
     this->callback = callback;
     thread = std::thread([&](){
-        
+
         std::make_shared<InitIoC>()->Execute();
-        IoC::Generator<ICommand, CommonMessage, PCQueue<PICommand>> interpretGen = [](CommonMessage msg, PCQueue<PICommand> queue) {
-            return std::make_shared<InterpretCommand>(msg, queue);
+        IoC::Generator<ICommand, CommonMessage, PCQueue<PICommand>, PUObjects> interpretGen = [](CommonMessage msg, PCQueue<PICommand> queue, PUObjects objects){
+            return std::make_shared<InterpretCommand>(msg, queue, objects);
         };
 
         IoC::Resolve<ICommand, std::string, std::any>("IoC.Register", "InterpretCommand", interpretGen)->Execute();
@@ -41,17 +42,30 @@ void Endpoint::Start(Callback callback)
 
 void Endpoint::Stop()
 {
+    _connection->close();
     event_base_loopbreak(evbase);
     evbase = nullptr;
     if(thread.joinable())
         thread.join();
 }
 
+void Endpoint::SendMessage(std::string exchange, std::string routingKey, const CommonMessage& msg)
+{
+    AMQP::Table table;
+    table.set("gameId", AMQP::ULongLong(msg.gameId));
+    table.set("objectId", AMQP::ULongLong(msg.objectId));
+    table.set("operationId", AMQP::ULongLong(msg.operationId));
+
+    AMQP::Envelope message(msg.json.c_str(), msg.json.size());
+    message.setHeaders(table);
+    channel->publish(exchange, routingKey, message);
+}
+
 void Endpoint::onConnected(AMQP::TcpConnection *connection)
 {
-    auto exchangeName = std::string("game-exchange-").append(std::to_string(id));
-    auto queueName = std::string("game-queue-").append(std::to_string(id));
-    auto key = std::string("routing-key-").append(std::to_string(id));
+    exchangeName = std::string("game-exchange-").append(std::to_string(id));
+    queueName = std::string("game-queue-").append(std::to_string(id));
+    key = std::string("routing-key-").append(std::to_string(id));
     
     // объявляем очереди и точки обмена на случай, если они не созданы
     channel->declareExchange(exchangeName, AMQP::direct).onError([&](const char* msg){
@@ -85,7 +99,7 @@ void Endpoint::onConnected(AMQP::TcpConnection *connection)
         msg.operationId = uint64_t(message.headers().get("operationId"));
         msg.json = std::string(message.body(), message.bodySize());
         
-        queue->Put(IoC::Resolve<ICommand, CommonMessage, PCQueue<PICommand>>("InterpretCommand", msg, queue));
+        queue->Put(IoC::Resolve<ICommand, CommonMessage, PCQueue<PICommand>>("InterpretCommand", msg, queue, objects));
     });
 }
 

@@ -2,23 +2,21 @@
 
 #include "ICommand.h"
 #include "ConcurrentQueue.h"
+#include "UObject.h"
+#include "MessageFormat.h"
 
 namespace Server
 {
-
-struct CommonMessage
-{
-    uint64_t gameId;
-    uint64_t objectId;
-    uint64_t operationId;
-    std::string json;
-};
-
     
 class InterpretCommand : public ICommand
 {
 public:
-    InterpretCommand(const CommonMessage& msg, PCQueue<PICommand> queue);
+    /**
+     * @param msg входящее сообщение от Агента
+     * @param queue очередь команд игры
+     * @param objects игровые объекты
+     */
+    InterpretCommand(const CommonMessage& msg, PCQueue<PICommand> queue, PUObjects objects);
     virtual ~InterpretCommand() {}
 
     virtual void Execute() override;
@@ -26,6 +24,7 @@ public:
 private:
     CommonMessage msg;
     PCQueue<PICommand> queue;
+    PUObjects objects;
 };
 
 } // namespace Server

@@ -14,18 +14,20 @@ class Endpoint : public AMQP::LibEventHandler
 public:
     using Callback = std::function<void(std::string)>;
     
-    Endpoint(PCQueue<PICommand> queue, uint64_t id = 0);
+    Endpoint(PCQueue<PICommand> queue, PUObjects objects, uint64_t id = 0);
     virtual ~Endpoint();
 
     /**
-     * @brief start event loop (blocking)
+     * @brief start event loop (nonblocking)
      * @param callback put "OK" if no errors
      */
-    void Start(Callback callback);
+    virtual void Start(Callback callback);
     /**
      * @brief stop event loop
      */
-    void Stop();
+    virtual void Stop();
+
+    virtual void SendMessage(std::string exchange, std::string key, const CommonMessage& msg);
 
     virtual void onConnected(AMQP::TcpConnection *connection) override;
     virtual void onError(AMQP::TcpConnection *connection, const char *message) override {
@@ -40,12 +42,14 @@ public:
 
 private:
     PCQueue<PICommand> queue;
+    PUObjects objects;
     uint64_t id; // отвечает за id игры
     AMQP::TcpConnection* _connection;
     event_base* evbase;
     AMQP::TcpChannel* channel;
     Callback callback;
     std::thread thread;
+    std::string exchangeName, queueName, key;
 };
 
 } // namespace Server
