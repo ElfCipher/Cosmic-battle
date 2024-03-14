@@ -1,0 +1,3 @@
+[submodule "GameServer/AMQP-CPP"]
+	path = GameServer/AMQP-CPP
+	url = git@github.com:CopernicaMarketingSoftware/AMQP-CPP.git

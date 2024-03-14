@@ -37,3 +37,4 @@ build/
 __pycache__/
 
 auto_adapters/
+rabbitmq/

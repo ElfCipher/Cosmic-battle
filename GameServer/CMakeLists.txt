@@ -10,10 +10,12 @@ set(SOURCES
     src/Commands/MoveWithBurning.cpp
     src/Commands/RotateWithVelocity.cpp
     src/Commands/InitIoC.cpp
+    src/Commands/InterpretCommand.cpp
     src/EventLoop.cpp
     src/Exceptions/ExceptionHandler.cpp
     src/Logger.cpp
     src/IoC.cpp
+    src/Endpoint.cpp
 )
 
 set(HEADERS
@@ -40,6 +42,8 @@ set(HEADERS
     hdr/Commands/StartLoop.h
     hdr/Commands/SoftStopLoop.h
     hdr/Commands/HardStopLoop.h
+    hdr/Commands/InterpretCommand.h
+    hdr/Commands/SetPositionCommand.h
     hdr/EventLoop.h
     hdr/Exceptions/Exception.h
     hdr/Exceptions/ExceptionHandler.h
@@ -49,7 +53,12 @@ set(HEADERS
     hdr/IoC.h
     hdr/ConcurrentQueue.h
     hdr/ManualResetEvent.h
+    hdr/Endpoint.h
+    hdr/MessageFormat.h
 )
+
+set (CMAKE_POSITION_INDEPENDENT_CODE True)
+add_subdirectory(AMQP-CPP)
 
 add_library(${GAME_SERVER_NAME} SHARED ${HEADERS} ${SOURCES})
 target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/
@@ -58,4 +67,10 @@ target_include_directories(${GAME_SERVER_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Objects/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/hdr/Exceptions/
                                                PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/auto_adapters
+                                               PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/AMQP-CPP/include
+)
+target_link_libraries(${GAME_SERVER_NAME} PUBLIC
+                    amqpcpp
+                    event
+                    jsoncpp
 )
