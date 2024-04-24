@@ -5,6 +5,7 @@
 #include "iocTest.h"
 #include "adaptersTest.h"
 #include "endpointTest.h"
+#include "corTest.h"
 
 int main(int argc, char* argv[])
 {
