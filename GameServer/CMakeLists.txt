@@ -55,6 +55,7 @@ set(HEADERS
     hdr/ManualResetEvent.h
     hdr/Endpoint.h
     hdr/MessageFormat.h
+    hdr/ChainOfResponsibility.h
 )
 
 set (CMAKE_POSITION_INDEPENDENT_CODE True)
